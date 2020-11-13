@@ -18,10 +18,11 @@ formSubmit = () => {
       buildDegree(success.degree);
       buildHumidity(success.humidity);
       buildWindSpeed(success.windSpeed);
+     
       buildCityCompare(success).then(response => {
         let city = Math.round(response.compare_degree_city) 
         let malmo = Math.round(response.compare_degree_malmo) 
-        const differenceBetweenCity = (city - malmo); 
+        const differenceBetweenCity = Math.abs(city - malmo); 
         const cityCompareBlock = document.querySelector('.city-compare p');
         cityCompareBlock.textContent = '';
         if(response.city === 'Malmo') {
@@ -31,6 +32,7 @@ formSubmit = () => {
       }).catch(cityDoesntExist => {
         console.error(cityDoesntExist)
       })
+
       loading.classList.add('hide');
     }).catch(issues => {
       errorField.classList.remove('hide');
@@ -61,7 +63,7 @@ buildDescription = (description, icon) => {
   const descriptionText = document.querySelector('.description p');
   const img = document.querySelector('.description img');
   descriptionText.textContent = '';
-  descriptionText.textContent = `Förklaring: ${description}`;
+  descriptionText.textContent = `Väder: ${description}`;
   img.setAttribute('src', icon)
   descriptionBlock.classList.remove('hide');
 
