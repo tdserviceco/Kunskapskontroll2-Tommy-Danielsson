@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kunskapskontroll 2 - Tommy Danielsson</title>
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+  <form class="weather-form">
+    <label for="city">
+      <input type="text" id="city" name="city" placeholder="Stad">
+    </label>
+    <input type="submit" class="submit-btn">
+  </form>
+  <div class="loading hide">
+    <p>Fetching</p> <span>.</span><span>.</span><span>.</span>
+  </div>
+  <div class="result">
+    <div class="description hide">
+      <p></p>
+      <img alt="väder ikon">
+    </div>
+    <div class="humidity hide">
+      <p></p>
+    </div>
+    <div class="degree hide">
+      <p></p>
+    </div>
+    <div class="wind-speed hide">
+      <p></p>
+    </div>
+    <div class="city-compare">
+      <p></p>
+    </div>
+  </div>
+
+  <div class="error hide">
+    <p>Stad existerar inte!</p>
+  </div>
+  <script src="js/main.js"></script>
+</body>
+
+</html>

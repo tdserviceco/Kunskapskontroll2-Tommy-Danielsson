@@ -1,0 +1,26 @@
+@import './reset.css';
+@import './style.css';
+
+.weather-form,
+.result {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1rem;
+  margin: 0 auto;
+}
+
+.weather-form.hide {
+  display: none;
+}
+
+.result {
+  flex-direction: column;
+}
+
+.description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
