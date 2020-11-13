@@ -16,29 +16,35 @@
     <input type="submit" class="submit-btn">
   </form>
   <div class="loading hide">
-    <p>Fetching</p> <span>.</span><span>.</span><span>.</span>
+    <p>Fetching</p> <span class="dots dot1">.</span><span class="dots dot2">.</span><span class="dots dot3">.</span>
   </div>
   <div class="result">
     <div class="description hide">
-      <p></p>
-      <img alt="väder ikon">
+      <span class="grid-left"></span>
+      <div class="grid-right">
+        <span class="weather-type"></span><img alt="väder ikon">
+      </div>
     </div>
     <div class="humidity hide">
-      <p></p>
+      <span class="grid-left"></span>
+      <span class="grid-right"></span>
     </div>
     <div class="degree hide">
-      <p></p>
+      <span class="grid-left"></span>
+      <span class="grid-right"></span>
     </div>
     <div class="wind-speed hide">
-      <p></p>
-    </div>
-    <div class="city-compare">
-      <p></p>
+      <span class="grid-left"></span>
+      <span class="grid-right"></span>
     </div>
   </div>
 
+  <div class="city-compare hide">
+    <p></p>
+  </div>
+
   <div class="error hide">
-    <p>Stad existerar inte!</p>
+    <p>Nått gick snett</p>
   </div>
   <script src="js/main.js"></script>
 </body>

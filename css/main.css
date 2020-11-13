@@ -1,8 +1,6 @@
 @import './reset.css';
 @import './style.css';
-
-.weather-form,
-.result {
+.weather-form, .result, .city-compare, .error {
   width: 50%;
   display: flex;
   justify-content: center;
@@ -27,4 +25,26 @@
 
 .city-compare {
   margin-top: 2rem;
+}
+
+.result>* {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+}
+
+.result>*:nth-child(odd) {
+  background: #e3e3e3;
+  padding: 1rem;
+}
+
+.result>*:nth-child(even) {
+  background: #797979;
+  padding: 1rem;
+}
+
+.description .grid-right {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
