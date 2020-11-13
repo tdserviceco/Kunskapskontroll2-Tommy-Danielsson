@@ -1,20 +1,46 @@
+const objects = {
+  // Min variant av globala variabel
+  descriptionBlock: document.querySelector('.description'),
+  descriptionText: document.querySelector('.description .grid-left'),
+  descriptionTextValue: document.querySelector('.description .grid-right .weather-type'),
+  descriptionImg: document.querySelector('.description img'),
+
+
+  humidityBlock: document.querySelector('.humidity'),
+  humidityText: document.querySelector('.humidity .grid-left'),
+  humidityTextValue: document.querySelector('.humidity .grid-right'),
+
+  degreeBlock: document.querySelector('.degree'),
+  degreeText: document.querySelector('.degree .grid-left'),
+  degreeTextValue: document.querySelector('.degree .grid-right'),
+
+  windSpeedBlock: document.querySelector('.wind-speed'),
+  windSpeedText: document.querySelector('.wind-speed .grid-left'),
+  windSpeedTextValue: document.querySelector('.wind-speed .grid-right'),
+
+  errorBlock: document.querySelector('.error'),
+  errorBlockText: document.querySelector('.error p'),
+
+  form: document.querySelector('form'),
+  loading: document.querySelector('.loading'),
+
+  cityCompareBlock: document.querySelector('.city-compare'),
+  cityCompareText: document.querySelector('.city-compare p'),
+
+}
+
 setup = () => {
   //Upplägg allting
   formSubmit()
 }
 
+
 formSubmit = () => {
-  const form = document.querySelector('form');
-  const loading = document.querySelector('.loading');
-  const errorField = document.querySelector('.error');
-  const cityCompareBlock = document.querySelector('.city-compare');
-  const cityCompareText = document.querySelector('.city-compare p');
-
-  form.addEventListener('submit', (e) => {
+  // Vid submit (när man trycker på knappen hämta) börjar vi bygga upp allt men tills ALLT är uppbyggt visar vi en "hämtar..." text (med liten animation)
+  objects.form.addEventListener('submit', (e) => {
     e.preventDefault();
-
-    errorField.classList.add('hide');
-    loading.classList.remove('hide');
+    objects.errorBlock.classList.add('hide');
+    objects.loading.remove('hide');
     let city = (e.target.city.value);
     fetchCity(city).then(success => {
       buildDescription(success.description, success.icon);
@@ -23,28 +49,24 @@ formSubmit = () => {
       buildWindSpeed(success.windSpeed);
 
       buildCityCompare(success).then(response => {
-        cityCompareBlock.classList.remove('hide');
+        // Har ingen catch i denna för vi kommer alltid få rätt stad (malmö)
+        // Däremot använder jag Math.abs() för omvandla - till + för vi måste säga att det är + skillnad.
+        objects.cityCompareBlock.classList.remove('hide');
         let city = Math.round(response.compare_degree_city)
         let malmo = Math.round(response.compare_degree_malmo)
         const differenceBetweenCity = Math.abs(city - malmo);
 
-        cityCompareText.textContent = '';
+        objects.cityCompareText.textContent = '';
         if (response.city === 'Malmo') {
-          return cityCompareText.textContent = 'Jämför du samma stad?'
+          return objects.cityCompareText.textContent = 'Jämför du samma stad?'
         }
 
-        return cityCompareText.textContent = `Skilland mellan Malmö och ${response.city} är: ${differenceBetweenCity} i grader`
-      }).catch(cityDoesntExist => {
-        console.error(cityDoesntExist)
-      })
-
-      loading.classList.add('hide');
+        return objects.cityCompareText.textContent = `Skilland mellan Malmö och ${response.city} är: ${differenceBetweenCity} i grader`
+      });
+      objects.loading.classList.add('hide');
     }).catch(issues => {
-      cityCompareBlock.classList.add('hide');
-      errorField.classList.remove('hide');
-      console.error(issues);
-    })
-
+      console.error('message: ', issues)
+    });
   })
 }
 
@@ -52,7 +74,21 @@ fetchCity = async (city) => {
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=sv&appid=212514b52ee74f93d002ad15b350fc09`;
   let response = await fetch(url);
   let convertJson = await response.json();
-  console.log(convertJson)
+
+  // Här kollar vi om vi kan få ut rätt stad eller inte, vid fel-kod 404 visa att stad existerar inte.
+  if (convertJson.cod === '404') {
+    objects.descriptionBlock.classList.add('hide');
+    objects.humidityBlock.classList.add('hide');
+    objects.degreeBlock.classList.add('hide');
+    objects.windSpeedBlock.classList.add('hide');
+    objects.cityCompareBlock.classList.add('hide')
+    objects.errorBlock.classList.remove('hide')
+    objects.errorBlockText.textContent = '';
+    objects.errorBlockText.textContent = 'Stad existerar inte';
+  }
+
+  //När vi har fått ut rätt stad börjar vi plocka in som ett object och returnerar tillbaka till fetchCity().then(success)
+
   return {
     description: convertJson.weather[0].description,
     icon: `http://openweathermap.org/img/wn/${convertJson.weather[0].icon}.png`,
@@ -63,70 +99,82 @@ fetchCity = async (city) => {
   }
 }
 
+
 buildDescription = (description, icon) => {
-  const descriptionBlock = document.querySelector('.description');
-  descriptionBlock.classList.add('hide');
-  const descriptionText = document.querySelector('.description .grid-left');
-  const descriptionTextValue = document.querySelector('.description .grid-right .weather-type');
 
-  const img = document.querySelector('.description img');
-  descriptionText.textContent = '';
-  descriptionText.textContent = 'Väder:';
-  descriptionTextValue.textContent = '';
-  descriptionTextValue.textContent = description
-  img.setAttribute('src', icon)
-  descriptionBlock.classList.remove('hide');
+  // Bygger upp här själva väder situation grid (molnigt, regn etc) med ikon på köpet
+  objects.descriptionBlock.classList.remove('show');
+  objects.descriptionBlock.classList.add('hide');
+
+  objects.descriptionText.textContent = '';
+  objects.descriptionText.textContent = 'Väder:';
+
+  objects.descriptionTextValue.textContent = '';
+  objects.descriptionTextValue.textContent = description
+
+  objects.descriptionImg.setAttribute('src', icon)
+
+  objects.descriptionBlock.classList.remove('hide');
+  objects.descriptionBlock.classList.add('show');
 }
 
-
-
-buildHumidity = (humidity) => {
-  const humidityBlock = document.querySelector('.humidity');
-  humidityBlock.classList.add('hide');
-  const humidityText = document.querySelector('.humidity .grid-left');
-  const humidityTextValue = document.querySelector('.humidity .grid-right');
-
-  humidityBlock.classList.remove('hide');
-  humidityText.textContent = '';
-  humidityText.textContent = 'Fuktighet: ';
-  humidityTextValue.textContent = '';
-  humidityTextValue.textContent = `${humidity}%`;
-}
 
 buildDegree = (degree) => {
-  const degreeBlock = document.querySelector('.degree');
-  degreeBlock.classList.add('hide');
-  const degreeText = document.querySelector('.degree .grid-left');
-  const degreeTextValue = document.querySelector('.degree .grid-right');
+  // Bygger upp temperatur grid
 
-  degreeBlock.classList.remove('hide');
-  weatherClassAdd(degreeBlock, degree);
+  objects.degreeBlock.classList.remove('show');
+  objects.degreeBlock.classList.add('hide');
+  objects.degreeBlock.classList.remove('hide');
+  objects.degreeBlock.classList.add('show');
+
+  weatherClassAdd(degree);
   degree = `${Math.round(degree)}°c`;
-  degreeText.textContent = '';
-  degreeText.textContent = 'Värme: ';
+  objects.degreeText.textContent = '';
+  objects.degreeText.textContent = 'Temperatur: ';
 
-  degreeTextValue.textContent = '';
-  degreeTextValue.textContent = degree
+  objects.degreeTextValue.textContent = '';
+  objects.degreeTextValue.textContent = degree
 
 }
+
+buildHumidity = (humidity) => {
+  // Bygger upp fuktighets grid
+  objects.humidityBlock.classList.remove('show');
+  objects.humidityBlock.classList.add('hide');
+
+  objects.humidityBlock.classList.remove('hide');
+  objects.humidityBlock.classList.add('show');
+  objects.humidityText.textContent = '';
+  objects.humidityText.textContent = 'Fuktighet: ';
+
+  objects.humidityTextValue.textContent = '';
+  objects.humidityTextValue.textContent = `${humidity}%`;
+}
+
 
 buildWindSpeed = (windSpeed) => {
-  const windSpeedBlock = document.querySelector('.wind-speed');
-  windSpeedBlock.classList.add('hide');
-  const windSpeedText = document.querySelector('.wind-speed .grid-left');
-  const windSpeedTextValue = document.querySelector('.wind-speed .grid-right');
+  // Bygger upp vindhastighet grid
 
-  windSpeedBlock.classList.remove('hide');
-  windSpeedText.textContent = '';
-  windSpeedText.textContent = 'Vindhastighet: ';
+  objects.windSpeedBlock.classList.remove('show');
+  objects.windSpeedBlock.classList.add('hide');
 
-  windSpeedTextValue.textContent = '';
-  windSpeedTextValue.textContent = `${windSpeed} kmph`;
 
+  objects.windSpeedBlock.classList.remove('hide');
+  objects.windSpeedBlock.classList.add('show');
+
+  objects.windSpeedText.textContent = '';
+  objects.windSpeedText.textContent = 'Vindhastighet: ';
+
+  objects.windSpeedTextValue.textContent = '';
+  objects.windSpeedTextValue.textContent = `${windSpeed} kmph`;
 }
 
+
 buildCityCompare = async (city) => {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=malmö&appid=212514b52ee74f93d002ad15b350fc09`;
+  // Här jämför vi Malmö mot stad som vi plockade in innan och sparar om de som ett nytt object.
+  // Vet inte om detta är bästa sätt men känns okay för mig.
+
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=malmö&lang=sv&appid=212514b52ee74f93d002ad15b350fc09`;
   let response = await fetch(url);
   let convertJson = await response.json();
   return {
@@ -136,16 +184,19 @@ buildCityCompare = async (city) => {
   }
 }
 
-weatherClassAdd = (degreeBlock, weatherDegree) => {
+
+weatherClassAdd = (weatherDegree) => {
+  // Väder check så ifall det är viss temperatur ute då byter vi färg på texten
   if (Math.round(weatherDegree) >= 20) {
-    return degreeBlock.classList.add('warm-weather');
+    return objects.degreeBlock.classList.add('warm-weather');
   }
   else if (Math.round(weatherDegree) <= 10) {
-    return degreeBlock.classList.add('cold-weather');
+    return objects.degreeBlock.classList.add('cold-weather');
   }
   else {
-    return degreeBlock.classList.add('decent-weather');
+    return objects.degreeBlock.classList.add('decent-weather');
   }
 }
+
 
 setup();
