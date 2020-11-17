@@ -69,9 +69,11 @@ fetchCityValue = (city) => {
 }
 
 fetchCityWeather = async (city) => {
+  // Api nyckel skrivs in här
+  const apiKey = '';
   // Hämtar data från openweathermap.org api och ifall det är ingen stad vid namn av X då returnerar vi en error tillbaka.
   // Annars sparar vi ner saker vi vill ha och retunerar tillbaka.
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=se&units=metric&appid=212514b52ee74f93d002ad15b350fc09`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=se&units=metric&appid=${apiKey}`;
   let response = await fetch(url);
   let convertJson = await response.json();
   if (convertJson.cod === '404') {
