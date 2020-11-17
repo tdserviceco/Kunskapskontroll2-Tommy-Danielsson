@@ -53,13 +53,19 @@
   justify-content: center;
 }
 
-.result .hide,
-.hide {
+
+.result.hide,
+.loading.hide,
+.city-compare.hide,
+.error.hide {
   opacity: 0;
   transition: opacity 0.75s ease-in;
 }
 
-.show {
+.result.show,
+.loading.show,
+.city-compare.show,
+.error.show {
   opacity: 1;
   transition: opacity 0.75s ease-in;
 }
