@@ -15,4 +15,3 @@ Saker jag använde:
 Async/await
 Math.abs
 
-https://tdserviceco.github.io/Kunskapskontroll2-Tommy-Danielsson/ preview
