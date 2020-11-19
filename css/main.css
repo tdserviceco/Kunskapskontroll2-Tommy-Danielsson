@@ -29,7 +29,7 @@
   zoom: 3;
 }
 
-.weather-description, .weather-speed, .weather-degree, .error, .compare-malmoe-with-city {
+.weather-description, .weather-speed, .weather-degree, .error, .compare-malmoe-with-city, .city {
   margin-top: 1rem;
   font-size: 2rem;
   text-transform: capitalize;
@@ -41,7 +41,7 @@
   text-transform: inherit;
 }
 
-.weather-description, .weather-type-icon, .weather-speed, .weather-degree, .error, .compare-malmoe-with-city {
+.weather-description, .weather-type-icon, .weather-speed, .weather-degree, .error, .compare-malmoe-with-city, .city {
   display: flex;
   justify-content: center;
   align-items: center;

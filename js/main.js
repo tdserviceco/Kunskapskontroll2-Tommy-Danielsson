@@ -4,6 +4,7 @@ setup = () => {
 
   getDefaultCity('malmö', loading).then(res => {
 
+    buildCityName(res.city_name);
     buildWeatherIcon(res.icon);
     buildWeatherDescription(res.description);
     buildWeatherDegree(res.degree);
@@ -51,7 +52,7 @@ getDefaultCity = async (city, loading) => {
 
 fetchCityValue = (city) => {
   getNewCityInformation(city).then(res => {
-
+    buildCityName(res.city_name)
     buildWeatherIcon(res.icon);
     buildWeatherDescription(res.description);
     buildWeatherDegree(res.degree);
@@ -101,7 +102,6 @@ getNewCityInformation = async (city) => {
   let response = await fetch(url);
 
   try {
-
     if (response.status > 200 || response.status < 200) {
       error.classList.remove('hide')
       error.classList.add('show');
@@ -135,6 +135,11 @@ getNewCityInformation = async (city) => {
 }
 
 /** Början av uppbyggning */
+buildCityName = (cityName) => {
+  const cityNameText = document.querySelector('.city p');
+  cityNameText.textContent = cityName;
+}
+
 buildWeatherIcon = (icon) => {
   const img = document.querySelector('.weather-type-icon img');
   img.setAttribute('src', icon);
