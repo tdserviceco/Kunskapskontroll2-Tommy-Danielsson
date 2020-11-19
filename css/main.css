@@ -1,6 +1,11 @@
 @import './reset.css';
 @import './style.css';
-.weather-form, .result, .city-compare, .error {
+.weather-container {
+  min-height: 100vh;
+  text-shadow: 3px 4px 20px rgba(0, 0, 0, 1);
+}
+
+.weather-form {
   width: 50%;
   display: flex;
   justify-content: center;
@@ -9,48 +14,34 @@
   margin: 0 auto;
 }
 
-.weather-form.hide {
-  display: none;
-}
-
-.result {
-  flex-direction: column;
-}
-
-.description {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.city-compare {
-  margin-top: 2rem;
-}
-
-.result>* {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 100%;
-  text-align: center;
-  border: 0.1rem inset #000;
-}
-
-.result>*:nth-child(odd) {
-  background: #e3e3e3;
+.weather-container input {
+  border: none;
+  border-radius: 0;
   padding: 1rem;
+  margin-bottom: 2rem;
 }
 
-.result > *:nth-child(2) {
-  border-bottom: none;
+.weather-container input:focus, .weather-container input:hover {
+  outline: none;
 }
 
-.result>*:nth-child(even) {
-  border-top: none;
-  background: #797979;
-  padding: 1rem;
+.weather-type-icon {
+  zoom: 3;
 }
 
-.description .grid-right {
+.weather-description, .weather-speed, .weather-degree, .error, .compare-malmoe-with-city {
+  margin-top: 1rem;
+  font-size: 2rem;
+  text-transform: capitalize;
+  font-family: var(--font);
+  font-weight: 100;
+}
+
+.weather-speed, .compare-malmoe-with-city {
+  text-transform: inherit;
+}
+
+.weather-description, .weather-type-icon, .weather-speed, .weather-degree, .error, .compare-malmoe-with-city {
   display: flex;
   justify-content: center;
   align-items: center;

@@ -1,91 +1,57 @@
-@keyframes bounce-even {
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;900&display=swap');
+@keyframes load8 {
   0% {
-    bottom: 5px;
-  }
-  50% {
-    bottom: 0
+    transform: rotate(0deg);
   }
   100% {
-    bottom: 5px
+    transform: rotate(360deg);
   }
 }
 
-@keyframes bounce-odd {
-  0% {
-    bottom: 0;
-  }
-  50% {
-    bottom: 5px
-  }
-  100% {
-    bottom: 0
-  }
-  ;
+:root {
+  --font: font-family: 'Roboto', sans-serif;
 }
 
-.dots {
-  position: relative;
-  display: inline-block;
+.decent-weather {
+  background: rgb(34, 193, 195);
+  background: linear-gradient(0deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+  color: #fff;
 }
 
-.dots:nth-child(2) {
-  padding-top: inherit;
-  animation-name: bounce-odd;
-  animation-duration: 5s;
+.cold-weather {
+  background: rgb(174,205,238);
+  background: linear-gradient(203deg, rgba(174,205,238,1) 24%, rgba(179,183,222,1) 65%, rgba(171,184,225,1) 74%, rgba(169,184,226,1) 76%, rgba(167,185,227,1) 79%, rgba(148,187,233,1) 100%);
+  color: #fff;
 }
 
-.dots:nth-child(3) {
-  padding-top: inherit;
-  animation-name: bounce-even;
-  animation-duration: 5s;
+.warm-weather {
+  background: rgb(131, 58, 180);
+  background: linear-gradient(90deg, rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
+  color: #fff;
 }
 
-.dots:nth-child(4) {
-  padding-top: inherit;
-  animation-name: bounce-odd;
-  animation-duration: 5s;
+.loader {
+  position: absolute;
+  top: calc(50% - 4em);
+  left: calc(50% - 4em);
+  width: 6em;
+  height: 6em;
+  border: 1.1em solid rgba(0, 0, 0, 0.2);
+  border-left: 1.1em solid #000000;
+  border-radius: 50%;
+  animation: load8 1.1s infinite linear;
 }
 
-.loading {
-  margin-top: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-.result.hide,
-.loading.hide,
-.city-compare.hide,
-.error.hide {
+.hide {
   opacity: 0;
-  transition: opacity 0.75s ease-in;
+  transition: opacity 0.75s ease-out;
 }
 
-.result.show,
-.loading.show,
-.city-compare.show,
-.error.show {
+.show {
   opacity: 1;
   transition: opacity 0.75s ease-in;
 }
 
-.warm-weather {
-  color: #FF0000;
-}
-
-.cold-weather {
-  color: #2cbbce;
-}
-
-.decent-weather {
-  color: #ff6700;
-}
-
-.submit-btn {
-  padding: 0.5rem;
-}
-
-input {
-  padding: 0.5rem;
+input[type="submit"] {
+  cursor: pointer;
 }

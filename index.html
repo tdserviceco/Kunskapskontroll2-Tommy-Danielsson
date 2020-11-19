@@ -9,43 +9,35 @@
 </head>
 
 <body>
-  <form class="weather-form">
-    <label for="city">
-      <input type="text" id="city" name="city" placeholder="Stad">
-    </label>
-    <input type="submit" value="Hämta" class="submit-btn">
-  </form>
-  <div class="loading">
-    <p>Hämtar</p> <span class="dots dot1">.</span><span class="dots dot2">.</span><span class="dots dot3">.</span>
-  </div>
-  <div class="result">
-    <section class="description">
-      <span class="grid-left"></span>
-      <div class="grid-right">
-        <span class="weather-type"></span><img alt="väder ikon">
-      </div>
+  <main class="weather-container hide">
+    <section class="weather-type-icon">
+      <img src="#" alt="weather type">
     </section>
-    <section class="humidity">
-      <span class="grid-left"></span>
-      <span class="grid-right"></span>
+    <section class="form-section">
+    <form class="weather-form">
+      <label for="city">
+        <input type="text" id="city" name="city" placeholder="Stad">
+      </label>
+      <input type="submit" value="Hämta" class="submit-btn">
+    </form>
     </section>
-    <section class="degree">
-      <span class="grid-left"></span>
-      <span class="grid-right"></span>
+    <section class="weather-description">
+      <p></p>
     </section>
-    <section class="wind-speed">
-      <span class="grid-left"></span>
-      <span class="grid-right"></span>
+    <section class="weather-degree">
+      <p></p>
     </section>
-  </div>
-
-  <div class="city-compare">
-    <p></p>
-  </div>
-
-  <div class="error">
-    <p></p>
-  </div>
+    <section class="weather-speed">
+      <p></p>
+    </section>
+    <section class="compare-malmoe-with-city">
+      <p></p>
+    </section>
+    <section class="error hide">
+      <p></p>
+    </section>
+  </main>
+  <div class="loader hide"></div>
   <script src="js/main.js"></script>
 </body>
 
