@@ -1,9 +1,8 @@
-setup = () => {
+setup = (lat, lon) => {
   const loading = document.querySelector('.loader');
   const weatherContainer = document.querySelector('.weather-container');
 
-  getDefaultCity('malmö', loading).then(res => {
-
+  getDefaultCity(lat, lon, loading).then(res => {
     buildCityName(res.city_name);
     buildWeatherIcon(res.icon);
     buildWeatherDescription(res.description);
@@ -19,13 +18,13 @@ setup = () => {
   formField()
 }
 
-getDefaultCity = async (city, loading) => {
+getDefaultCity = async (lat, lon, loading) => {
   const apiKey = '212514b52ee74f93d002ad15b350fc09';
   loading.classList.remove('hide');
   loading.classList.add('show');
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=se&units=metric&appid=${apiKey}`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&lang=se&units=metric&appid=${apiKey}`;
   let response = await fetch(url);
-
+  
   try {
     if (response.status > 200 || response.status < 200) {
       throw (response.statusText);
@@ -35,6 +34,7 @@ getDefaultCity = async (city, loading) => {
     }
     else {
       let convertToJson = await response.json();
+
       return {
         description: convertToJson.weather[0].description,
         icon: `http://openweathermap.org/img/wn/${convertToJson.weather[0].icon}.png`,
@@ -100,7 +100,6 @@ getNewCityInformation = async (city) => {
   const error = document.querySelector('.error');
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=se&units=metric&appid=${apiKey}`;
   let response = await fetch(url);
-
   try {
     if (response.status > 200 || response.status < 200) {
       error.classList.remove('hide')
@@ -169,7 +168,6 @@ buildCityCompare = async (city) => {
   let url = `https://api.openweathermap.org/data/2.5/weather?q=malmö&lang=se&units=metric&appid=${apiKey}`;
   let response = await fetch(url);
   let convertToJson = await response.json();
-  console.log(convertToJson);
   return {
     city: city.city_name,
     compare_degree_malmo: convertToJson.main.temp,
@@ -181,6 +179,7 @@ buildCityCompare = async (city) => {
 
 weatherClassAdd = (weatherDegree) => {
   // Väder check så ifall det är viss temperatur ute då byter vi färg på texten
+  // Har också skrivit in kontroll om viss klass existeras ta bort de och sedan ersätt med nya klass.
   const weatherContainer = document.querySelector('.weather-container');
   if (weatherDegree <= 10) {
     if (weatherContainer.classList.contains('warm-weather')) {
@@ -211,4 +210,17 @@ weatherClassAdd = (weatherDegree) => {
     weatherContainer.classList.add('decent-weather');
   }
 }
-setup()
+
+getCords = () => {
+  // Här hämtar vi vår geolocation (Lat + Lon) sedan när vi har sparat ner de skickar vi de till setup() som kommer bygga upp allt åt oss
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      let latitude = position.coords.latitude;
+      let longitude = position.coords.longitude;
+      return setup(latitude, longitude)
+    });
+  }
+}
+
+//Aktivera getCords
+getCords();
