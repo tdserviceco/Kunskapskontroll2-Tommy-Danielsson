@@ -1,4 +1,5 @@
 setup = (lat, lon) => {
+  // Setup() hämtar in Lat och Lon för sedan skicka det till DefaultCity() så vi kan på startsidan få vilken stad vi är nuvarande
   const loading = document.querySelector('.loader');
   const weatherContainer = document.querySelector('.weather-container');
 
@@ -15,6 +16,7 @@ setup = (lat, lon) => {
     weatherContainer.classList.add('show');
 
   })
+  // när man skriver ny stad aktiveras denna (få gå söka till formField())
   formField()
 }
 
@@ -24,7 +26,7 @@ getDefaultCity = async (lat, lon, loading) => {
   loading.classList.add('show');
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&lang=se&units=metric&appid=${apiKey}`;
   let response = await fetch(url);
-  
+  //Error hantering ifall vi stöter på nåt otrevligt
   try {
     if (response.status > 200 || response.status < 200) {
       throw (response.statusText);
@@ -100,6 +102,7 @@ getNewCityInformation = async (city) => {
   const error = document.querySelector('.error');
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=se&units=metric&appid=${apiKey}`;
   let response = await fetch(url);
+  // Samma sak som DefaultCity(), error hantering för här kan det verkligen hända nåt!
   try {
     if (response.status > 200 || response.status < 200) {
       error.classList.remove('hide')
