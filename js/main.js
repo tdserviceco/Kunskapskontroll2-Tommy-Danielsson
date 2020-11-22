@@ -21,20 +21,14 @@ setup = (lat, lon) => {
 }
 
 getDefaultCity = async (lat, lon, loading) => {
-  const apiKey = '212514b52ee74f93d002ad15b350fc09';
+  const apiKey = '';
   loading.classList.remove('hide');
   loading.classList.add('show');
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&lang=se&units=metric&appid=${apiKey}`;
   let response = await fetch(url);
   //Error hantering ifall vi stöter på nåt otrevligt
   try {
-    if (response.status > 200 || response.status < 200) {
-      throw (response.statusText);
-    }
-    else if (response.status === 401 || response.status === 404) {
-      throw (response.statusText);
-    }
-    else {
+    if (response.status >= 200 && response.status < 300) {
       let convertToJson = await response.json();
 
       return {
@@ -45,6 +39,13 @@ getDefaultCity = async (lat, lon, loading) => {
         humidity: convertToJson.main.humidity,
         city_name: convertToJson.name
       }
+    }
+    else if (response.status === 401 || response.status === 404) {
+      throw (response.statusText);
+    }
+    else {
+      
+      throw (response.statusText);
     }
   }
   catch (error) {
@@ -97,30 +98,19 @@ formField = () => {
 }
 
 getNewCityInformation = async (city) => {
-  const apiKey = '212514b52ee74f93d002ad15b350fc09';
+  const apiKey = '';
   const loading = document.querySelector('.loader');
   const error = document.querySelector('.error');
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=se&units=metric&appid=${apiKey}`;
   let response = await fetch(url);
   // Samma sak som DefaultCity(), error hantering för här kan det verkligen hända nåt!
   try {
-    if (response.status > 200 || response.status < 200) {
-      error.classList.remove('hide')
-      error.classList.add('show');
-      throw (error.textContent = response.statusText);
-    }
-    else if (response.status === 401 || response.status === 404) {
-      error.classList.remove('hide')
-      error.classList.add('show');
-      throw (error.textContent = response.statusText);
-    }
-    else {
+    if (response.status >= 200 && response.status < 300) {
+      let convertToJson = await response.json();
       loading.classList.remove('hide');
       loading.classList.add('show');
       error.classList.remove('show')
       error.classList.add('hide')
-
-      let convertToJson = await response.json();
       return {
         description: convertToJson.weather[0].description,
         icon: `http://openweathermap.org/img/wn/${convertToJson.weather[0].icon}.png`,
@@ -129,6 +119,38 @@ getNewCityInformation = async (city) => {
         humidity: convertToJson.main.humidity,
         city_name: convertToJson.name
       }
+    }
+    else if (response.status === 401 || response.status === 404) {
+      if(error.classList.contains('show')) {
+        error.classList.remove('show');
+        error.classList.add('hide');
+
+      }
+      else if(error.classList.contains('hide')) {
+        error.classList.remove('hide')
+        error.classList.add('show');
+      }
+      else {
+        error.classList.remove('hide')
+        error.classList.add('show');
+      }
+      throw (error.textContent = response.statusText);
+    }
+    else {
+      if(error.classList.contains('show')) {
+        error.classList.remove('show');
+        error.classList.add('hide');
+
+      }
+      else if(error.classList.contains('hide')) {
+        error.classList.remove('hide')
+        error.classList.add('show');
+      }
+      else {
+        error.classList.remove('hide')
+        error.classList.add('show');
+      }
+      throw (error.textContent = response.statusText);
     }
   }
   catch (error) {
@@ -154,7 +176,7 @@ buildWeatherDescription = (description) => {
 
 buildWeatherDegree = (degree) => {
   weatherClassAdd(degree);
-  degree = `${degree}°c`;
+  degree = `${Math.round(degree)}°c`;
   const weatherDegreeText = document.querySelector('.weather-degree p');
   weatherDegreeText.textContent = degree;
 }
